@@ -1,12 +1,14 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Wrapper from "./components/Wrapper/Wrapper";
+import AddQuiz from "./components/AddQuiz/AddQuiz";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <h1>jQuiz</h1>,
+    element: <Wrapper />,
     id: "wrapperComponent",
-    children: [{ path: "/", element: <p>Quizzes</p> }],
+    children: [{ path: "/", element: <AddQuiz /> }],
   },
 ]);
 
