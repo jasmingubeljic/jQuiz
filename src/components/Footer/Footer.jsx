@@ -1,3 +1,12 @@
+import { Col, Row } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+
 export default function Footer() {
-  return <p>Footer</p>;
+  return (
+    <Container fluid className="mt-4 bg-secondary">
+      <Row>
+        <Col>Footer</Col>
+      </Row>
+    </Container>
+  );
 }
