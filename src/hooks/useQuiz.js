@@ -1,8 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import useApi from "../api/useApi";
 import useStore from "../store/useStore";
 import { useParams, useSearchParams } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 export default function useQuiz() {
   const [questions, setQuestions] = useState([]);
@@ -10,7 +12,8 @@ export default function useQuiz() {
   const [validated, setValidated] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [quizById, setQuizById] = useState(false);
-  const { quizzes, addQuiz } = useStore();
+  const { addQuiz, editQuiz, fetchQuiz, removeQuiz } = useApi();
+  const { addQuizToStore, updateQuizToStore, removeQuizOnStore } = useStore();
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
@@ -18,14 +21,15 @@ export default function useQuiz() {
   const editMode = searchParams.get("edit") === "true";
   const quizId = params.id;
 
-  const getQuizById = useCallback(
-    (id) => {
-      const quiz = quizzes.find((q) => q.id === id);
-      setQuizById(quiz);
-      setQuestions(quiz.questions);
-    },
-    [quizzes]
-  );
+  const getQuizById = useCallback((id) => {
+    fetchQuizMutation.mutate(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const removeQuizById = useCallback((id) => {
+    removeQuizMutation.mutate(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // get quiz by id
@@ -130,35 +134,78 @@ export default function useQuiz() {
   );
 
   // CREATE/UPDATE QUIZ
-  const createQuiz = useCallback(
-    (e) => {
-      e.preventDefault();
-      const valid = onValidateHandler(e);
-      if (!valid || questions.length === 0) return;
-      if (quizById?.id) {
-        // perform update quiz by id, do not add new quiz to store
-        const updatedQuiz = {};
-        updatedQuiz["id"] = quizById.id;
-        updatedQuiz["title"] = e.target.title.value.trim();
-        updatedQuiz["questions"] = questions;
-        console.log("updatedQuiz", updatedQuiz);
-        navigate("/");
-        return;
-      }
-      const quiz = {};
-      quiz["id"] = uuidv4();
-      quiz["title"] = e.target.title.value.trim();
-      quiz["questions"] = questions;
-      addQuiz(quiz);
+  const createQuiz = (e) => {
+    e.preventDefault();
+    const valid = onValidateHandler(e);
+    if (!valid || questions.length === 0) return;
+    if (quizById?.id) {
+      // perform update quiz by id, do not add new quiz to store
+      const updatedQuiz = {};
+      updatedQuiz["id"] = quizById.id;
+      updatedQuiz["title"] = e.target.title.value.trim();
+      updatedQuiz["questions"] = questions;
+      editQuizMutation.mutate(updatedQuiz);
+      navigate("/");
+      return;
+    }
+    const quiz = {};
+    quiz["id"] = uuidv4();
+    quiz["title"] = e.target.title.value.trim();
+    quiz["questions"] = questions;
+    createQuizMutation.mutate(quiz);
+    navigate("/");
+  };
+
+  const createQuizMutation = useMutation({
+    mutationFn: addQuiz,
+    onSuccess: (quiz) => {
+      console.log("Quiz saved successfully", quiz);
+      addQuizToStore(quiz);
+    },
+    onError: (error) => {
+      console.error("Error saving quiz", error);
+    },
+  });
+
+  const editQuizMutation = useMutation({
+    mutationFn: editQuiz,
+    onSuccess: (quiz) => {
+      console.log("Quiz updated successfully", quiz);
+      updateQuizToStore(quiz);
+    },
+    onError: (error) => {
+      console.error("Error saving quiz", error);
+    },
+  });
+
+  const fetchQuizMutation = useMutation({
+    mutationFn: fetchQuiz,
+    onSuccess: (quiz) => {
+      console.log("Quiz saved successfully", quiz);
+      setQuizById(quiz);
+      setQuestions(quiz.questions);
+    },
+    onError: (error) => {
+      console.error("Error saving quiz", error);
+    },
+  });
+
+  const removeQuizMutation = useMutation({
+    mutationFn: removeQuiz,
+    onSuccess: (id) => {
+      removeQuizOnStore(id);
       navigate("/");
     },
-    [questions, addQuiz, navigate, quizById]
-  );
+    onError: (error) => {
+      console.error("Error removing quiz", error);
+    },
+  });
 
   return {
     questions,
     updateQuestions,
     createQuiz,
+    removeQuizById,
     validated,
     showModal,
     setShowModal,

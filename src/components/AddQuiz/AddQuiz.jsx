@@ -12,6 +12,7 @@ export default function AddQuiz() {
     questions,
     updateQuestions,
     createQuiz,
+    removeQuizById,
     validated,
     showModal,
     setShowModal,
@@ -26,7 +27,20 @@ export default function AddQuiz() {
     <Container>
       <Row>
         <Col>
-          <h1 className="mb-3">Create a Quiz</h1>
+          <Stack direction="horizontal" className="gap-3">
+            <h1 className="mb-3">
+              {editMode ? `Edit Quiz: ${quizById.title}` : "Add a new Quiz"}
+            </h1>
+            <Button
+              onClick={() => {
+                removeQuizById(quizById.id);
+              }}
+              variant="outline-danger"
+              hidden={!editMode}
+            >
+              Delete this Quiz
+            </Button>
+          </Stack>
           <Form onSubmit={createQuiz} noValidate validated={validated}>
             <Form.Group className="mb-3">
               <Form.Label>Quiz name:</Form.Label>
@@ -44,15 +58,21 @@ export default function AddQuiz() {
             <div>
               {questions.map((q, index) => {
                 return (
-                  <Stack key={index}>
-                    <h2>
-                      {index + 1}. {q.question}
-                    </h2>
-                    <ul>
-                      {q.answers?.map((a, index) => (
-                        <li key={index}>{a}</li>
-                      ))}
-                    </ul>
+                  <Stack
+                    direction="horizontal"
+                    key={index}
+                    className="gap-3 mb-5"
+                  >
+                    <div>
+                      <h2 className="fs-4">
+                        {index + 1}. {q.question}
+                      </h2>
+                      <ul>
+                        {q.answers?.map((a, index) => (
+                          <li key={index}>{a}</li>
+                        ))}
+                      </ul>
+                    </div>
                     <Button
                       type="button"
                       onClick={() => {
@@ -64,18 +84,22 @@ export default function AddQuiz() {
                     </Button>
                     <Button
                       type="button"
+                      variant="outline-danger"
                       onClick={() => {
                         deleteQuestionById(q.id);
                       }}
                     >
-                      Delete
+                      Delete question
                     </Button>
                   </Stack>
                 );
               })}
             </div>
-            <Stack direction="vertical" className="gap-5">
-              <Button variant="text" onClick={() => setShowModal(true)}>
+            <Stack direction="horizontal" className="gap-5">
+              <Button
+                variant="outline-secondary"
+                onClick={() => setShowModal(true)}
+              >
                 + Add Question
               </Button>
               <Button type="submit">
