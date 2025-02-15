@@ -16,6 +16,7 @@ export default function AddQuiz() {
     showModal,
     setShowModal,
     quizById,
+    deleteQuestionById,
     questionEditing,
     setQuestionEditing,
     editMode,
@@ -59,7 +60,15 @@ export default function AddQuiz() {
                         setShowModal(true);
                       }}
                     >
-                      edit {index + 1}
+                      Edit
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        deleteQuestionById(q.id);
+                      }}
+                    >
+                      Delete
                     </Button>
                   </Stack>
                 );

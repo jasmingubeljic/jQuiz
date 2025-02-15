@@ -120,6 +120,15 @@ export default function useQuiz() {
     [questions]
   );
 
+  const deleteQuestionById = useCallback(
+    (id) => {
+      console.log("deleteQuestionById: ", id);
+      let updatedArray = questions.filter((item) => item.id !== id);
+      setQuestions(updatedArray);
+    },
+    [questions]
+  );
+
   // CREATE/UPDATE QUIZ
   const createQuiz = useCallback(
     (e) => {
@@ -154,6 +163,7 @@ export default function useQuiz() {
     showModal,
     setShowModal,
     quizById,
+    deleteQuestionById,
     questionEditing,
     setQuestionEditing,
     editMode,
