@@ -10,9 +10,10 @@ const router = createBrowserRouter([
     element: <Wrapper />,
     id: "wrapperComponent",
     children: [
-      { path: "/", element: <Homepage /> },
-      { path: "/add", element: <AddQuiz /> },
-      { path: "/quizzes/:id", element: <AddQuiz /> },
+      { path: "/", element: <Homepage /> }, // All quizzes
+      { path: "/quiz/:id", element: <p>Take a quiz</p> },
+      { path: "/create", element: <AddQuiz /> },
+      { path: "/edit/:id", element: <AddQuiz /> },
     ],
   },
 ]);

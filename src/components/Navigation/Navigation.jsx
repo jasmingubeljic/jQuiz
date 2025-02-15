@@ -11,7 +11,7 @@ export default function Navigation() {
             <Link to="/" className="text-white">
               Quizzes
             </Link>
-            <Link to="/add" className="text-white">
+            <Link to="/create" className="text-white">
               Add Quiz
             </Link>
           </Stack>

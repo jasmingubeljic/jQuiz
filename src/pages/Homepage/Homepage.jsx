@@ -14,7 +14,7 @@ export default function Homepage() {
             {q.title}{" "}
             <Button
               variant="secondary"
-              onClick={() => navigate("/quizzes/" + q.id + "?edit=true")}
+              onClick={() => navigate("/edit/" + q.id + "?edit=true")}
             >
               Edit
             </Button>

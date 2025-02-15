@@ -15,6 +15,10 @@ export default function AddQuiz() {
     validated,
     showModal,
     setShowModal,
+    quizById,
+    questionEditing,
+    setQuestionEditing,
+    editMode,
   } = useQuiz();
 
   return (
@@ -25,7 +29,13 @@ export default function AddQuiz() {
           <Form onSubmit={createQuiz} noValidate validated={validated}>
             <Form.Group className="mb-3">
               <Form.Label>Quiz name:</Form.Label>
-              <Form.Control required type="text" name="title"></Form.Control>
+              <Form.Control
+                required
+                type="text"
+                name="title"
+                defaultValue={quizById ? quizById.title : ""}
+                // defaultValue={quiz.title}
+              ></Form.Control>
               <Form.Text className="text-muted">
                 Give a descriptive title for your quiz
               </Form.Text>
@@ -42,6 +52,15 @@ export default function AddQuiz() {
                         <li key={index}>{a}</li>
                       ))}
                     </ul>
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setQuestionEditing(q);
+                        setShowModal(true);
+                      }}
+                    >
+                      edit {index + 1}
+                    </Button>
                   </Stack>
                 );
               })}
@@ -50,7 +69,9 @@ export default function AddQuiz() {
               <Button variant="text" onClick={() => setShowModal(true)}>
                 + Add Question
               </Button>
-              <Button type="submit">CREATE QUIZ</Button>
+              <Button type="submit">
+                {!editMode ? "CREATE QUIZ" : "UPDATE QUIZ"}
+              </Button>
             </Stack>
           </Form>
 
@@ -67,13 +88,22 @@ export default function AddQuiz() {
               </Modal.Header>
               <Modal.Body>
                 <Form.Group className="mb-3">
+                  <Form.Control
+                    name="id"
+                    type="text"
+                    defaultValue={questionEditing ? questionEditing.id : ""}
+                    hidden={true}
+                  />
                   <Form.Label>Question:</Form.Label>
                   <Form.Control
                     required
                     as="textarea"
                     rows={3}
                     name="question"
-                  ></Form.Control>
+                    defaultValue={
+                      questionEditing ? questionEditing.question : ""
+                    }
+                  />
                   <Form.Text className="text-muted">
                     Give a clear question
                   </Form.Text>
@@ -85,6 +115,9 @@ export default function AddQuiz() {
                       required
                       type="text"
                       name="answer_1"
+                      defaultValue={
+                        questionEditing ? questionEditing.answers[0] : ""
+                      }
                     ></Form.Control>{" "}
                   </FloatingLabel>
                 </Form.Group>
@@ -95,6 +128,9 @@ export default function AddQuiz() {
                       required
                       type="text"
                       name="answer_2"
+                      defaultValue={
+                        questionEditing ? questionEditing.answers[1] : ""
+                      }
                     ></Form.Control>
                   </FloatingLabel>
                   {/* <Form.Text className="text-muted"></Form.Text> */}
@@ -105,7 +141,13 @@ export default function AddQuiz() {
                     controlId="floatingInput"
                     label="Answer 3 (optional)"
                   >
-                    <Form.Control type="text" name="answer_3"></Form.Control>
+                    <Form.Control
+                      type="text"
+                      name="answer_3"
+                      defaultValue={
+                        questionEditing ? questionEditing.answers[2] : ""
+                      }
+                    ></Form.Control>
                   </FloatingLabel>
                   {/* <Form.Text className="text-muted"></Form.Text> */}
                 </Form.Group>
@@ -115,7 +157,13 @@ export default function AddQuiz() {
                     controlId="floatingInput"
                     label="Answer 4 (optional)"
                   >
-                    <Form.Control type="text" name="answer_4"></Form.Control>
+                    <Form.Control
+                      type="text"
+                      name="answer_4"
+                      defaultValue={
+                        questionEditing ? questionEditing.answers[3] : ""
+                      }
+                    ></Form.Control>
                   </FloatingLabel>
                   {/* <Form.Text className="text-muted"></Form.Text> */}
                 </Form.Group>
@@ -128,6 +176,7 @@ export default function AddQuiz() {
                     <FormSelect
                       aria-label="Correct answer"
                       name="correctAnswerIndex"
+                      defaultValue={questionEditing?.correctAnswerIndex}
                     >
                       <option value="0">Answer 1</option>
                       <option value="1">Answer 2</option>
