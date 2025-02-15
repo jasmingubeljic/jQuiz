@@ -7,11 +7,6 @@ export default function useApi() {
     return new Promise((resolve) => setTimeout(resolve, time));
   };
 
-  const fetchQuizzes = async () => {
-    await simulateNetworkDelay();
-    return quizzes;
-  };
-
   const fetchQuiz = async (id) => {
     await simulateNetworkDelay();
     const quiz = quizzes.find((q) => q.id === id);
@@ -43,7 +38,6 @@ export default function useApi() {
   };
 
   return {
-    fetchQuizzes,
     fetchQuiz,
     addQuiz,
     editQuiz,

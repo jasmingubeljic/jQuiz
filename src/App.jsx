@@ -2,7 +2,8 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Wrapper from "./components/Wrapper/Wrapper";
 import Homepage from "./pages/Homepage/Homepage";
-import AddQuiz from "./components/AddQuiz/AddQuiz";
+import QuizPage from "./pages/QuizPage/QuizPage";
+import ManageQuizPage from "./pages/ManageQuizPage/ManageQuizPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
@@ -14,9 +15,9 @@ const router = createBrowserRouter([
     id: "wrapperComponent",
     children: [
       { path: "/", element: <Homepage /> }, // All quizzes
-      { path: "/quiz/:id", element: <p>Take a quiz</p> },
-      { path: "/create", element: <AddQuiz /> },
-      { path: "/edit/:id", element: <AddQuiz /> },
+      { path: "/quiz/:id", element: <QuizPage /> },
+      { path: "/create", element: <ManageQuizPage /> },
+      { path: "/edit/:id", element: <ManageQuizPage /> },
     ],
   },
 ]);
