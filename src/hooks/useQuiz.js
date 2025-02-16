@@ -181,12 +181,12 @@ export default function useQuiz() {
   const fetchQuizMutation = useMutation({
     mutationFn: fetchQuiz,
     onSuccess: (quiz) => {
-      console.log("Quiz saved successfully", quiz);
+      // console.log("Quiz fetched successfully", quiz);
       setQuizById(quiz);
       setQuestions(quiz.questions);
     },
     onError: (error) => {
-      console.error("Error saving quiz", error);
+      console.error("Error fetchig the quiz", error);
     },
   });
 
