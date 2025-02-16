@@ -1,8 +1,29 @@
-# React + Vite
+# jQuiz
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A showcase of a quiz app with CRUD operations and the ability to take quizzes.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Clone the repository:
+
+```terminal
+git clone https://github.com/jasmingubeljic/jQuiz.git jQuiz
+```
+
+2. Navigate to folder
+
+```terminal
+cd jQuiz
+```
+
+3. Install dependencies:
+
+```terminal
+npm install
+```
+
+4. Run development server:
+
+```terminal
+npm run dev
+```
