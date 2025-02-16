@@ -28,9 +28,11 @@ export default function QuizTaking() {
     <>
       {!quizResults ? (
         <div>
-          <h1>{quizById.title}</h1>
+          <h1 className="fw-regular fs-5 text-uppercase mb-5">
+            {quizById.title}
+          </h1>
           <div>
-            <h2>
+            <h2 className="fs-4">
               {questionObj.question} ({questionOrdinalNo}/{questionsLength})
             </h2>
             <Form onSubmit={submitAnswerHandler}>
@@ -42,6 +44,7 @@ export default function QuizTaking() {
                     type="radio"
                     key={`radio-${index + 1}`}
                     value={a}
+                    className="mt-2"
                   />
                 );
               })}
@@ -51,6 +54,7 @@ export default function QuizTaking() {
                 type="submit"
                 variant="primary"
                 hidden={currentQuestionIndex + 1 === questionsLength}
+                className="mt-5"
               >
                 Dalje
               </Button>
@@ -60,12 +64,14 @@ export default function QuizTaking() {
                 variant="primary"
                 hidden={currentQuestionIndex + 1 !== questionsLength}
                 onClick={() => setIsElementActive(true)}
+                className="mt-5"
               >
                 Završi
               </Button>
 
               <Confirm
-                message="Da li ste sigurni da želite završiti kviz"
+                title="Da li ste sigurni...?"
+                message="Da li ste sigurni da želite završiti kviz?"
                 show={isElementActive}
                 onClose={() => setIsElementActive(false)}
                 onConfirmAction={() => {
@@ -78,7 +84,10 @@ export default function QuizTaking() {
         </div>
       ) : (
         <div>
-          <h2>Vaš rezultat je {quizResults}%</h2>
+          <h1 className="fw-regular fs-5 text-uppercase mb-5">Rezultat</h1>
+          <h2 className="fs-3">
+            Vaš rezultat je <span className="fw-bold">{quizResults}%</span>
+          </h2>
           <p>{quizMessage}</p>
         </div>
       )}

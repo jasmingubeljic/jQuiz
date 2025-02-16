@@ -11,7 +11,7 @@ export default function QuizzesList() {
 
   return (
     <Container>
-      <h1 className="fw-semibold fs-3 mb-5">Lista kvizova</h1>
+      <h1 className="fw-regular fs-5 text-uppercase mb-5">Lista kvizova</h1>
       <Stack gap={3}>
         {quizzes.map((q, index) => (
           <Stack
@@ -27,6 +27,7 @@ export default function QuizzesList() {
               onClick={() => navigate("/edit/" + q.id + "?edit=true")}
               hidden={!isAdmin}
               className="d-flex gap-1 align-items-center ms-auto"
+              size="sm"
             >
               <MdModeEdit />
               Uredi

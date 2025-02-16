@@ -38,8 +38,8 @@ export default function AddQuiz() {
             direction="horizontal"
             className="gap-3 align-items-center mb-5"
           >
-            <h1 className="fw-semibold fs-3">
-              {editMode ? `Uredi kviz: ${quizById.title}` : "Dodaj novi kviz"}
+            <h1 className="fw-regular fs-5 text-uppercase mb-3">
+              {editMode ? `Uredi kviz (${quizById.title})` : "Dodaj novi kviz"}
             </h1>
             {editMode && (
               <Button
