@@ -1,19 +1,28 @@
+import { useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import useTakeQuiz from "../../hooks/useTakeQuiz";
+import useControlUI from "../../hooks/useControlUI";
+import Confirm from "../UI/Confirm/Confirm";
+import Spinner from "react-bootstrap/Spinner";
 
 export default function QuizTaking() {
+  const { isElementActive, setIsElementActive } = useControlUI();
   const {
     quizById,
     currentQuestionIndex,
     questionObj,
     questionsLength,
     quizResults,
+    quizMessage,
     submitAnswerHandler,
   } = useTakeQuiz();
 
   const questionOrdinalNo = currentQuestionIndex + 1;
 
-  if (!questionObj) return <p>Loading ...</p>;
+  const buttonRef = useRef();
+
+  if (!questionObj)
+    return <Spinner animation="grow" variant="primary" size="sm" />;
 
   return (
     <>
@@ -36,17 +45,41 @@ export default function QuizTaking() {
                   />
                 );
               })}
-              <Button type="submit" variant="primary">
-                {currentQuestionIndex + 1 === questionsLength
-                  ? "Submit Quiz"
-                  : "Next"}
+
+              <Button
+                ref={buttonRef}
+                type="submit"
+                variant="primary"
+                hidden={currentQuestionIndex + 1 === questionsLength}
+              >
+                Dalje
               </Button>
+
+              <Button
+                type="button"
+                variant="primary"
+                hidden={currentQuestionIndex + 1 !== questionsLength}
+                onClick={() => setIsElementActive(true)}
+              >
+                Završi
+              </Button>
+
+              <Confirm
+                message="Da li ste sigurni da želite završiti kviz"
+                show={isElementActive}
+                onClose={() => setIsElementActive(false)}
+                onConfirmAction={() => {
+                  setIsElementActive(false);
+                  buttonRef.current.click();
+                }}
+              />
             </Form>
           </div>
         </div>
       ) : (
         <div>
-          <h2>Your Score: {quizResults}%</h2>
+          <h2>Vaš rezultat je {quizResults}%</h2>
+          <p>{quizMessage}</p>
         </div>
       )}
     </>

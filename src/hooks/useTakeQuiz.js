@@ -5,6 +5,7 @@ export default function useTakeQuiz() {
   const { quizById } = useQuiz();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [quizResults, setQuizResults] = useState(false);
+  const [quizMessage, setQuizMessage] = useState(false);
   const [answerResultsArray, setAnswerResultsArray] = useState([]);
 
   useEffect(() => {
@@ -27,13 +28,20 @@ export default function useTakeQuiz() {
       console.log("answerResultsArray: ", answerResultsArray);
       const correctAnswersLength = answerResultsArray.filter((a) => a).length;
       const scorePercentage = (correctAnswersLength / questionsLength) * 100;
-      setQuizResults(Math.round(scorePercentage));
+      const formattedValue = Math.round(scorePercentage).toString(); // we need string since in case of number 0, it is falsy value
+      let quizMessage = "Nažalost, niste prošli kviz. Pokušajte ponovo!";
+      if (scorePercentage >= 60) {
+        quizMessage = "Čestitamo! Kviz ste uspješno završili";
+      }
+      setQuizResults(formattedValue);
+      setQuizMessage(quizMessage);
     }
   }, [currentQuestionIndex, questionsLength, answerResultsArray]);
 
   const submitAnswerHandler = useCallback(
     (e) => {
       e.preventDefault();
+      console.log("submit handler");
       const selectedRadioValue = e.target.elements["jgroup"].value;
       const selectedAnswerIndex =
         questionObj.answers.indexOf(selectedRadioValue);
@@ -61,6 +69,7 @@ export default function useTakeQuiz() {
     questionObj,
     questionsLength,
     quizResults,
+    quizMessage,
     submitAnswerHandler,
   };
 }
