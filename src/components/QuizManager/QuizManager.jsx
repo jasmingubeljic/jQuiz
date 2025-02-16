@@ -6,6 +6,11 @@ import FormSelect from "react-bootstrap/FormSelect";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import useQuiz from "../../hooks/useQuiz";
+import { IoMdAdd } from "react-icons/io";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdModeEdit } from "react-icons/md";
+import { IoIosSave } from "react-icons/io";
+import { GrValidate } from "react-icons/gr";
 
 export default function AddQuiz() {
   const {
@@ -23,27 +28,35 @@ export default function AddQuiz() {
     editMode,
   } = useQuiz();
 
+  console.log("quiz", editMode, quizById);
+
   return (
     <Container>
       <Row>
         <Col>
-          <Stack direction="horizontal" className="gap-3">
-            <h1 className="mb-3">
-              {editMode ? `Edit Quiz: ${quizById.title}` : "Add a new Quiz"}
+          <Stack
+            direction="horizontal"
+            className="gap-3 align-items-center mb-5"
+          >
+            <h1 className="fw-semibold fs-3">
+              {editMode ? `Uredi kviz: ${quizById.title}` : "Dodaj novi kviz"}
             </h1>
-            <Button
-              onClick={() => {
-                removeQuizById(quizById.id);
-              }}
-              variant="outline-danger"
-              hidden={!editMode}
-            >
-              Delete this Quiz
-            </Button>
+            {editMode && (
+              <Button
+                onClick={() => {
+                  removeQuizById(quizById.id);
+                }}
+                variant="danger"
+                className="d-flex align-items-center gap-1 ms-auto"
+                size="sm"
+              >
+                <RiDeleteBin6Line /> Izbriši kviz
+              </Button>
+            )}
           </Stack>
           <Form onSubmit={createQuiz} noValidate validated={validated}>
             <Form.Group className="mb-3">
-              <Form.Label>Quiz name:</Form.Label>
+              <Form.Label>Naziv kviza:</Form.Label>
               <Form.Control
                 required
                 type="text"
@@ -51,59 +64,80 @@ export default function AddQuiz() {
                 defaultValue={quizById ? quizById.title : ""}
                 // defaultValue={quiz.title}
               ></Form.Control>
-              <Form.Text className="text-muted">
-                Give a descriptive title for your quiz
-              </Form.Text>
+              <Form.Text className="text-muted">Naziv vašeg kviza</Form.Text>
             </Form.Group>
-            <div>
+            <Stack gap={3} className="mb-3">
               {questions.map((q, index) => {
                 return (
                   <Stack
-                    direction="horizontal"
                     key={index}
-                    className="gap-3 mb-5"
+                    direction="horizontal"
+                    className="border px-2 py-1 rounded"
                   >
                     <div>
-                      <h2 className="fs-4">
+                      <h2 className="fw-semibold fs-5">
                         {index + 1}. {q.question}
                       </h2>
                       <ul>
-                        {q.answers?.map((a, index) => (
-                          <li key={index}>{a}</li>
-                        ))}
+                        {q.answers?.map((a, index) => {
+                          console.log(
+                            "q.correctAnswerIndex == index",
+                            q.correctAnswerIndex,
+                            index
+                          );
+                          return (
+                            <li key={index}>
+                              {a}{" "}
+                              {+q.correctAnswerIndex === index && (
+                                <GrValidate className="text-muted" />
+                              )}
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
-                    <Button
-                      type="button"
-                      onClick={() => {
-                        setQuestionEditing(q);
-                        setShowModal(true);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline-danger"
-                      onClick={() => {
-                        deleteQuestionById(q.id);
-                      }}
-                    >
-                      Delete question
-                    </Button>
+                    <div className="d-flex align-items-center gap-2 ms-auto">
+                      <Button
+                        type="button"
+                        size="sm"
+                        className="d-flex align-items-center gap-1"
+                        onClick={() => {
+                          setQuestionEditing(q);
+                          setShowModal(true);
+                        }}
+                      >
+                        <MdModeEdit /> Uredi
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => {
+                          deleteQuestionById(q.id);
+                        }}
+                      >
+                        <RiDeleteBin6Line />
+                      </Button>
+                    </div>
                   </Stack>
                 );
               })}
-            </div>
-            <Stack direction="horizontal" className="gap-5">
+            </Stack>
+            <Button
+              variant="outline-secondary"
+              onClick={() => setShowModal(true)}
+              className="d-flex align-items-center gap-1"
+              size="sm"
+            >
+              <IoMdAdd /> Dodaj pitanje
+            </Button>
+            <Stack className="col-md-5 mx-auto my-5">
               <Button
-                variant="outline-secondary"
-                onClick={() => setShowModal(true)}
+                type="submit"
+                className="mx-auto d-flex justify-content-center align-items-center gap-1"
               >
-                + Add Question
-              </Button>
-              <Button type="submit">
-                {!editMode ? "CREATE QUIZ" : "UPDATE QUIZ"}
+                <IoIosSave className="mt-1 fs-5" />{" "}
+                {!editMode ? "Spasi kviz" : "Spasi izmjene"}
               </Button>
             </Stack>
           </Form>
@@ -117,7 +151,7 @@ export default function AddQuiz() {
           >
             <Form onSubmit={updateQuestions} noValidate validated={validated}>
               <Modal.Header closeButton>
-                <Modal.Title>Add Question</Modal.Title>
+                <Modal.Title>Dodaj pitanje</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form.Group className="mb-3">
@@ -127,7 +161,7 @@ export default function AddQuiz() {
                     defaultValue={questionEditing ? questionEditing.id : ""}
                     hidden={true}
                   />
-                  <Form.Label>Question:</Form.Label>
+                  <Form.Label>Sadržaj pitanja:</Form.Label>
                   <Form.Control
                     required
                     as="textarea"
@@ -138,12 +172,12 @@ export default function AddQuiz() {
                     }
                   />
                   <Form.Text className="text-muted">
-                    Give a clear question
+                    (Pitanje treba da bude jasno)
                   </Form.Text>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <FloatingLabel controlId="floatingInput" label="Answer 1">
+                  <FloatingLabel controlId="floatingInput" label="Odgovor 1">
                     <Form.Control
                       required
                       type="text"
@@ -156,7 +190,7 @@ export default function AddQuiz() {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <FloatingLabel controlId="floatingInput" label="Answer 2">
+                  <FloatingLabel controlId="floatingInput" label="Odgovor 2">
                     <Form.Control
                       required
                       type="text"
@@ -172,7 +206,7 @@ export default function AddQuiz() {
                 <Form.Group className="mb-3">
                   <FloatingLabel
                     controlId="floatingInput"
-                    label="Answer 3 (optional)"
+                    label="Odgovor 3 (opcionalno)"
                   >
                     <Form.Control
                       type="text"
@@ -188,7 +222,7 @@ export default function AddQuiz() {
                 <Form.Group className="mb-3">
                   <FloatingLabel
                     controlId="floatingInput"
-                    label="Answer 4 (optional)"
+                    label="Odgovor 4 (opcionalno)"
                   >
                     <Form.Control
                       type="text"
@@ -198,33 +232,36 @@ export default function AddQuiz() {
                       }
                     ></Form.Control>
                   </FloatingLabel>
-                  {/* <Form.Text className="text-muted"></Form.Text> */}
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <FloatingLabel
                     controlId="floatingInput"
-                    label="Select correct answer for the question"
+                    label="Izaberi tačan odgovor pitanja"
                   >
                     <FormSelect
-                      aria-label="Correct answer"
+                      aria-label="Tačan odgovor"
                       name="correctAnswerIndex"
                       defaultValue={questionEditing?.correctAnswerIndex}
                     >
-                      <option value="0">Answer 1</option>
-                      <option value="1">Answer 2</option>
-                      <option value="2">Answer 3</option>
-                      <option value="3">Answer 4</option>
+                      <option value="0">Odgovor 1</option>
+                      <option value="1">Odgovor 2</option>
+                      <option value="2">Odgovor 3</option>
+                      <option value="3">Odgovor 4</option>
                     </FormSelect>
                   </FloatingLabel>
+                  <Form.Text className="text-muted">
+                    (Tačan odgovor određen u ovom polju koristi se prilikom
+                    ocjenjivanja kviza)
+                  </Form.Text>
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={() => setShowModal(false)}>
-                  Close
+                  Zatvori
                 </Button>
                 <Button variant="primary" type="submit">
-                  Save Changes
+                  Spasi izmjene
                 </Button>
               </Modal.Footer>
             </Form>
