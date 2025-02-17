@@ -1,19 +1,19 @@
 import useStore from "../../store/useStore";
 import Stack from "react-bootstrap/Stack";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
 import { Link, useNavigate } from "react-router-dom";
 import { MdModeEdit } from "react-icons/md";
+import PropTypes from "prop-types";
 
-export default function QuizzesList() {
-  const { quizzes, isAdmin } = useStore();
+export default function QuizzesList(props) {
+  const { isAdmin } = useStore();
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <>
       <h1 className="fw-regular fs-5 text-uppercase mb-5">Lista kvizova</h1>
       <Stack gap={3}>
-        {quizzes.map((q, index) => (
+        {props.sortedQuizzes.map((q, index) => (
           <Stack
             key={index}
             direction="horizontal"
@@ -35,6 +35,10 @@ export default function QuizzesList() {
           </Stack>
         ))}
       </Stack>
-    </Container>
+    </>
   );
 }
+
+QuizzesList.propTypes = {
+  sortedQuizzes: PropTypes.func.isRequired,
+};
