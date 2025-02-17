@@ -15,7 +15,12 @@ export default function useQuiz() {
   const { addQuiz, editQuiz, fetchQuiz, removeQuiz } = useApi();
   const { addQuizToStore, updateQuizToStore, removeQuizOnStore } = useStore();
   const { isElementActive, setIsElementActive } = useControlUI();
-  const { handleFormValidate, formValidated } = useValidateForm();
+  const {
+    handleFormValidate,
+    handleForm2Validate,
+    formValidated,
+    form2Validated,
+  } = useValidateForm();
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
@@ -52,7 +57,7 @@ export default function useQuiz() {
   const updateQuestions = useCallback(
     (e) => {
       e.preventDefault();
-      const valid = handleFormValidate(e);
+      const valid = handleForm2Validate(e);
       if (!valid) return;
       const {
         id,
@@ -109,7 +114,7 @@ export default function useQuiz() {
         console.log("questionObj: ", questionObj);
       }
     },
-    [questions, setIsElementActive, handleFormValidate]
+    [questions, setIsElementActive, handleForm2Validate]
   );
 
   const deleteQuestionById = useCallback(
@@ -197,6 +202,7 @@ export default function useQuiz() {
     createQuiz,
     removeQuizById,
     formValidated,
+    form2Validated,
     isElementActive,
     setIsElementActive,
     quizById,

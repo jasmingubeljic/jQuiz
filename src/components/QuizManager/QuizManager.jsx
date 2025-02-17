@@ -19,6 +19,7 @@ export default function AddQuiz() {
     createQuiz,
     removeQuizById,
     formValidated,
+    form2Validated,
     isElementActive,
     setIsElementActive,
     quizById,
@@ -168,7 +169,7 @@ export default function AddQuiz() {
             <Form
               onSubmit={updateQuestions}
               noValidate
-              validated={formValidated}
+              validated={form2Validated}
             >
               <Modal.Header closeButton>
                 <Modal.Title>Dodaj pitanje</Modal.Title>

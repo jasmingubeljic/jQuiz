@@ -2,15 +2,15 @@ import { useState } from "react";
 
 export default function useQuiz() {
   const [formValidated, setFormValidated] = useState(false);
+  const [form2Validated, setForm2Validated] = useState(false);
 
-  const handleFormValidate = (event) => {
+  const validate = (event, setValidatedState) => {
     const form = event.currentTarget;
-    console.log("form.checkValidity(): ", form.checkValidity());
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     }
-    setFormValidated(true);
+    setValidatedState(true);
     if (!form.checkValidity()) {
       return false;
     } else {
@@ -18,8 +18,13 @@ export default function useQuiz() {
     }
   };
 
+  const handleFormValidate = (event) => validate(event, setFormValidated);
+  const handleForm2Validate = (event) => validate(event, setForm2Validated);
+
   return {
     handleFormValidate,
+    handleForm2Validate,
     formValidated,
+    form2Validated,
   };
 }
