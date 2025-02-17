@@ -1,13 +1,12 @@
 import { useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import useTakeQuiz from "../../hooks/useTakeQuiz";
-import useControlUI from "../../hooks/useControlUI";
+
 import Confirm from "../UI/Confirm/Confirm";
 import Spinner from "react-bootstrap/Spinner";
 import QuizCountdown from "../QuizCountdown/QuizCountdown";
 
 export default function QuizTaking() {
-  const { isElementActive, setIsElementActive } = useControlUI();
   const {
     quizById,
     currentQuestionIndex,
@@ -16,6 +15,8 @@ export default function QuizTaking() {
     quizResults,
     quizMessage,
     submitAnswerHandler,
+    isElementActive,
+    setIsElementActive,
   } = useTakeQuiz();
 
   const questionOrdinalNo = currentQuestionIndex + 1;
@@ -61,10 +62,9 @@ export default function QuizTaking() {
               </Button>
 
               <Button
-                type="button"
+                onClick={() => setIsElementActive(true)}
                 variant="primary"
                 hidden={currentQuestionIndex + 1 !== questionsLength}
-                onClick={() => setIsElementActive(true)}
                 className="mt-5"
               >
                 Završi

@@ -1,8 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
 import useQuiz from "./useQuiz";
+import useControlUI from "./useControlUI";
 
 export default function useTakeQuiz() {
   const { quizById } = useQuiz();
+  const { isElementActive, setIsElementActive } = useControlUI();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [quizResults, setQuizResults] = useState(false);
   const [quizMessage, setQuizMessage] = useState(false);
@@ -41,8 +43,10 @@ export default function useTakeQuiz() {
   const submitAnswerHandler = useCallback(
     (e) => {
       e.preventDefault();
-      console.log("submit handler");
       const selectedRadioValue = e.target.elements["jgroup"].value;
+      if (!selectedRadioValue) {
+        return;
+      }
       const selectedAnswerIndex =
         questionObj.answers.indexOf(selectedRadioValue);
       const correctAnswerIndex = questionObj.correctAnswerIndex;
@@ -71,5 +75,7 @@ export default function useTakeQuiz() {
     quizResults,
     quizMessage,
     submitAnswerHandler,
+    isElementActive,
+    setIsElementActive,
   };
 }

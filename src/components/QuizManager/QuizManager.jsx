@@ -18,7 +18,7 @@ export default function AddQuiz() {
     updateQuestions,
     createQuiz,
     removeQuizById,
-    validated,
+    formValidated,
     isElementActive,
     setIsElementActive,
     quizById,
@@ -55,7 +55,7 @@ export default function AddQuiz() {
           <Form
             onSubmit={createQuiz}
             noValidate
-            validated={validated}
+            validated={formValidated}
             className="d-flex flex-column gap-4"
           >
             <Form.Group className="mb-3">
@@ -165,7 +165,11 @@ export default function AddQuiz() {
               setIsElementActive(false);
             }}
           >
-            <Form onSubmit={updateQuestions} noValidate validated={validated}>
+            <Form
+              onSubmit={updateQuestions}
+              noValidate
+              validated={formValidated}
+            >
               <Modal.Header closeButton>
                 <Modal.Title>Dodaj pitanje</Modal.Title>
               </Modal.Header>

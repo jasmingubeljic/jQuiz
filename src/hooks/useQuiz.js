@@ -4,17 +4,18 @@ import { v4 as uuidv4 } from "uuid";
 import useApi from "../api/useApi";
 import useStore from "../store/useStore";
 import useControlUI from "../hooks/useControlUI";
+import useValidateForm from "../hooks/useValidateForm";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
 export default function useQuiz() {
   const [questions, setQuestions] = useState([]);
   const [questionEditing, setQuestionEditing] = useState(false);
-  const [validated, setValidated] = useState(false);
   const [quizById, setQuizById] = useState(false);
   const { addQuiz, editQuiz, fetchQuiz, removeQuiz } = useApi();
   const { addQuizToStore, updateQuizToStore, removeQuizOnStore } = useStore();
   const { isElementActive, setIsElementActive } = useControlUI();
+  const { handleFormValidate, formValidated } = useValidateForm();
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
@@ -48,24 +49,10 @@ export default function useQuiz() {
     }
   }, [isElementActive]);
 
-  const onValidateHandler = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated(true);
-    if (!form.checkValidity()) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   const updateQuestions = useCallback(
     (e) => {
       e.preventDefault();
-      const valid = onValidateHandler(e);
+      const valid = handleFormValidate(e);
       if (!valid) return;
       const {
         id,
@@ -122,7 +109,7 @@ export default function useQuiz() {
         console.log("questionObj: ", questionObj);
       }
     },
-    [questions, setIsElementActive]
+    [questions, setIsElementActive, handleFormValidate]
   );
 
   const deleteQuestionById = useCallback(
@@ -137,7 +124,7 @@ export default function useQuiz() {
   // CREATE/UPDATE QUIZ
   const createQuiz = (e) => {
     e.preventDefault();
-    const valid = onValidateHandler(e);
+    const valid = handleFormValidate(e);
     if (!valid || questions.length === 0) return;
     if (quizById?.id) {
       //update
@@ -209,7 +196,7 @@ export default function useQuiz() {
     updateQuestions,
     createQuiz,
     removeQuizById,
-    validated,
+    formValidated,
     isElementActive,
     setIsElementActive,
     quizById,
