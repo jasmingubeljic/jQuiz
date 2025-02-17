@@ -251,10 +251,16 @@ export default function AddQuiz() {
                     label="Izaberi tačan odgovor pitanja"
                   >
                     <FormSelect
+                      required
                       aria-label="Tačan odgovor"
                       name="correctAnswerIndex"
-                      defaultValue={questionEditing?.correctAnswerIndex}
+                      defaultValue={
+                        questionEditing?.correctAnswerIndex
+                          ? questionEditing?.correctAnswerIndex
+                          : ""
+                      }
                     >
+                      <option value=""></option>
                       <option value="0">Odgovor 1</option>
                       <option value="1">Odgovor 2</option>
                       <option value="2">Odgovor 3</option>
