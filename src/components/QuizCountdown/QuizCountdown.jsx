@@ -35,7 +35,7 @@ export default function QuizCountdown(props) {
     }
   };
 
-  // if (!quizDuration) return;
+  if (!quizDuration) return;
 
   return <Countdown date={Date.now() + quizDurationInMS} renderer={renderer} />;
 }
