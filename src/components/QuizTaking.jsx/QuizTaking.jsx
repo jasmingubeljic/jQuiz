@@ -40,10 +40,10 @@ export default function QuizTaking() {
               {questionObj.answers.map((a, index) => {
                 return (
                   <Form.Check
+                    key={`radio-${index + 1}-${questionObj.question}`}
                     label={a}
                     name="jgroup"
                     type="radio"
-                    key={`radio-${index + 1}`}
                     value={a}
                     className="mt-2"
                   />
