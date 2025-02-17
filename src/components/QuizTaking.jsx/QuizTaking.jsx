@@ -4,6 +4,7 @@ import useTakeQuiz from "../../hooks/useTakeQuiz";
 import useControlUI from "../../hooks/useControlUI";
 import Confirm from "../UI/Confirm/Confirm";
 import Spinner from "react-bootstrap/Spinner";
+import QuizCountdown from "../QuizCountdown/QuizCountdown";
 
 export default function QuizTaking() {
   const { isElementActive, setIsElementActive } = useControlUI();
@@ -78,6 +79,11 @@ export default function QuizTaking() {
                   setIsElementActive(false);
                   buttonRef.current.click();
                 }}
+              />
+
+              <QuizCountdown
+                quizDuration={quizById.quizDuration}
+                quizResults={quizResults}
               />
             </Form>
           </div>

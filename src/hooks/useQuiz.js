@@ -139,19 +139,21 @@ export default function useQuiz() {
     const valid = onValidateHandler(e);
     if (!valid || questions.length === 0) return;
     if (quizById?.id) {
-      // perform update quiz by id, do not add new quiz to store
+      //update
       const updatedQuiz = {};
       updatedQuiz["id"] = quizById.id;
       updatedQuiz["title"] = e.target.title.value.trim();
       updatedQuiz["questions"] = questions;
+      updatedQuiz["quizDuration"] = e.target.quizDuration.value;
       editQuizMutation.mutate(updatedQuiz);
-      navigate("/");
-      return;
+      return navigate("/");
     }
+    //create
     const quiz = {};
     quiz["id"] = uuidv4();
     quiz["title"] = e.target.title.value.trim();
     quiz["questions"] = questions;
+    quiz["quizDuration"] = e.target.quizDuration.value;
     createQuizMutation.mutate(quiz);
     navigate("/");
   };

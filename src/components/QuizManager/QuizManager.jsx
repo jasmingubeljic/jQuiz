@@ -28,7 +28,7 @@ export default function AddQuiz() {
     editMode,
   } = useQuiz();
 
-  console.log("quiz", editMode, quizById);
+  console.log("quiz", quizById);
 
   return (
     <Container>
@@ -54,7 +54,12 @@ export default function AddQuiz() {
               </Button>
             )}
           </Stack>
-          <Form onSubmit={createQuiz} noValidate validated={validated}>
+          <Form
+            onSubmit={createQuiz}
+            noValidate
+            validated={validated}
+            className="d-flex flex-column gap-4"
+          >
             <Form.Group className="mb-3">
               <Form.Label>Naziv kviza:</Form.Label>
               <Form.Control
@@ -62,9 +67,22 @@ export default function AddQuiz() {
                 type="text"
                 name="title"
                 defaultValue={quizById ? quizById.title : ""}
-                // defaultValue={quiz.title}
-              ></Form.Control>
+              />
               <Form.Text className="text-muted">Naziv vašeg kviza</Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>
+                Vrijeme izrade kviza u sekundama (opcionalno):
+              </Form.Label>
+              <Form.Control
+                type="number"
+                name="quizDuration"
+                min={0}
+                defaultValue={quizById ? quizById.quizDuration : ""}
+              ></Form.Control>
+              <Form.Text className="text-muted">
+                (Korisnici će imati ograničeno vrijeme za rješavanje kviza)
+              </Form.Text>
             </Form.Group>
             <Stack gap={3} className="mb-3">
               {questions.map((q, index) => {
@@ -126,7 +144,7 @@ export default function AddQuiz() {
             <Button
               variant="outline-secondary"
               onClick={() => setShowModal(true)}
-              className="d-flex align-items-center gap-1"
+              className="d-flex align-items-center gap-1 align-self-start"
               size="sm"
             >
               <IoMdAdd /> Dodaj pitanje
@@ -153,7 +171,7 @@ export default function AddQuiz() {
               <Modal.Header closeButton>
                 <Modal.Title>Dodaj pitanje</Modal.Title>
               </Modal.Header>
-              <Modal.Body>
+              <Modal.Body className="d-flex flex-column gap-3">
                 <Form.Group className="mb-3">
                   <Form.Control
                     name="id"
@@ -164,8 +182,7 @@ export default function AddQuiz() {
                   <Form.Label>Sadržaj pitanja:</Form.Label>
                   <Form.Control
                     required
-                    as="textarea"
-                    rows={3}
+                    type="text"
                     name="question"
                     defaultValue={
                       questionEditing ? questionEditing.question : ""
@@ -176,7 +193,7 @@ export default function AddQuiz() {
                   </Form.Text>
                 </Form.Group>
 
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-3 d-flex flex-column gap-2">
                   <FloatingLabel controlId="floatingInput" label="Odgovor 1">
                     <Form.Control
                       required
@@ -187,9 +204,7 @@ export default function AddQuiz() {
                       }
                     ></Form.Control>{" "}
                   </FloatingLabel>
-                </Form.Group>
 
-                <Form.Group className="mb-3">
                   <FloatingLabel controlId="floatingInput" label="Odgovor 2">
                     <Form.Control
                       required
@@ -200,10 +215,6 @@ export default function AddQuiz() {
                       }
                     ></Form.Control>
                   </FloatingLabel>
-                  {/* <Form.Text className="text-muted"></Form.Text> */}
-                </Form.Group>
-
-                <Form.Group className="mb-3">
                   <FloatingLabel
                     controlId="floatingInput"
                     label="Odgovor 3 (opcionalno)"
@@ -217,9 +228,6 @@ export default function AddQuiz() {
                     ></Form.Control>
                   </FloatingLabel>
                   {/* <Form.Text className="text-muted"></Form.Text> */}
-                </Form.Group>
-
-                <Form.Group className="mb-3">
                   <FloatingLabel
                     controlId="floatingInput"
                     label="Odgovor 4 (opcionalno)"
