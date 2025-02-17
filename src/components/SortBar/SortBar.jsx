@@ -11,7 +11,7 @@ export default function SortBar(props) {
       >
         <Form.Check
           inline
-          label="Sortiraj prema nazivu kviza"
+          label="Sortiraj prema nazivu"
           name="group1"
           value="1"
           type="radio"

@@ -19,16 +19,14 @@ export default function AddQuiz() {
     createQuiz,
     removeQuizById,
     validated,
-    showModal,
-    setShowModal,
+    isElementActive,
+    setIsElementActive,
     quizById,
     deleteQuestionById,
     questionEditing,
     setQuestionEditing,
     editMode,
   } = useQuiz();
-
-  console.log("quiz", quizById);
 
   return (
     <Container>
@@ -121,7 +119,7 @@ export default function AddQuiz() {
                         className="d-flex align-items-center gap-1"
                         onClick={() => {
                           setQuestionEditing(q);
-                          setShowModal(true);
+                          setIsElementActive(true);
                         }}
                       >
                         <MdModeEdit /> Uredi
@@ -143,7 +141,7 @@ export default function AddQuiz() {
             </Stack>
             <Button
               variant="outline-secondary"
-              onClick={() => setShowModal(true)}
+              onClick={() => setIsElementActive(true)}
               className="d-flex align-items-center gap-1 align-self-start"
               size="sm"
             >
@@ -161,10 +159,10 @@ export default function AddQuiz() {
           </Form>
 
           <Modal
-            show={showModal}
+            show={isElementActive}
             size="lg"
             onHide={() => {
-              setShowModal(false);
+              setIsElementActive(false);
             }}
           >
             <Form onSubmit={updateQuestions} noValidate validated={validated}>
@@ -265,7 +263,10 @@ export default function AddQuiz() {
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={() => setShowModal(false)}>
+                <Button
+                  variant="secondary"
+                  onClick={() => setIsElementActive(false)}
+                >
                   Zatvori
                 </Button>
                 <Button variant="primary" type="submit">

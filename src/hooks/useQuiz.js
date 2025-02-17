@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import useApi from "../api/useApi";
 import useStore from "../store/useStore";
+import useControlUI from "../hooks/useControlUI";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
@@ -10,10 +11,10 @@ export default function useQuiz() {
   const [questions, setQuestions] = useState([]);
   const [questionEditing, setQuestionEditing] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [quizById, setQuizById] = useState(false);
   const { addQuiz, editQuiz, fetchQuiz, removeQuiz } = useApi();
   const { addQuizToStore, updateQuizToStore, removeQuizOnStore } = useStore();
+  const { isElementActive, setIsElementActive } = useControlUI();
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
@@ -42,10 +43,10 @@ export default function useQuiz() {
   }, [editMode, quizId, getQuizById]);
 
   useEffect(() => {
-    if (!showModal) {
+    if (!isElementActive) {
       setQuestionEditing(false);
     }
-  }, [showModal]);
+  }, [isElementActive]);
 
   const onValidateHandler = (event) => {
     const form = event.currentTarget;
@@ -117,11 +118,11 @@ export default function useQuiz() {
           });
         }
 
-        setShowModal(false);
+        setIsElementActive(false);
         console.log("questionObj: ", questionObj);
       }
     },
-    [questions]
+    [questions, setIsElementActive]
   );
 
   const deleteQuestionById = useCallback(
@@ -209,8 +210,8 @@ export default function useQuiz() {
     createQuiz,
     removeQuizById,
     validated,
-    showModal,
-    setShowModal,
+    isElementActive,
+    setIsElementActive,
     quizById,
     deleteQuestionById,
     questionEditing,
