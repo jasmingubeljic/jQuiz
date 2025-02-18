@@ -1,9 +1,6 @@
 import { Col, Row, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
-import FormSelect from "react-bootstrap/FormSelect";
-import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import useQuiz from "../../hooks/useQuiz";
 import { IoMdAdd } from "react-icons/io";
@@ -12,6 +9,8 @@ import { MdModeEdit } from "react-icons/md";
 import { IoIosSave } from "react-icons/io";
 import { GrValidate } from "react-icons/gr";
 import Loader from "../Loader/Loader";
+import QuestionManager from "../QuestionManager/QuestionManager";
+import styles from "./QuizManager.module.css";
 
 export default function AddQuiz() {
   const {
@@ -39,7 +38,7 @@ export default function AddQuiz() {
       <Row>
         <Col>
           <Stack direction="horizontal" className="gap-3 align-items-center mb-5">
-            <h1 className="fw-regular fs-5 text-uppercase mb-3">{editMode ? `Uredi kviz (${quizById.title})` : "Dodaj novi kviz"}</h1>
+            <h1 className="fw-regular fs-5 text-uppercase mb-3 m-auto ms-md-0">{editMode ? `Uredi kviz (${quizById.title})` : "Dodaj novi kviz"}</h1>
             {editMode && (
               <Button
                 onClick={() => {
@@ -61,7 +60,13 @@ export default function AddQuiz() {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Vrijeme izrade kviza u sekundama (opcionalno):</Form.Label>
-              <Form.Control type="number" name="quizDuration" min={0} defaultValue={quizById ? quizById.quizDuration : ""}></Form.Control>
+              <Form.Control
+                type="number"
+                name="quizDuration"
+                min={0}
+                defaultValue={quizById ? quizById.quizDuration : ""}
+                className={`${styles["quiz-duration"]}`}
+              ></Form.Control>
               <Form.Text className="text-muted">(Korisnici će imati ograničeno vrijeme za rješavanje kviza)</Form.Text>
             </Form.Group>
             <Stack gap={3} className="mb-3">
@@ -109,80 +114,25 @@ export default function AddQuiz() {
                 );
               })}
             </Stack>
-            <Button variant="outline-secondary" onClick={() => setIsElementActive(true)} className="d-flex align-items-center gap-1 align-self-start" size="sm">
+            <QuestionManager
+              isElementActive={isElementActive}
+              onHide={() => {
+                setIsElementActive(false);
+              }}
+              onSubmit={updateQuestions}
+              form2Validated={form2Validated}
+              questionEditing={questionEditing}
+              onClose={() => setIsElementActive(false)}
+            />
+            <Button variant="outline-secondary" onClick={() => setIsElementActive(true)} className="d-flex align-items-center gap-1 m-auto ms-md-0" size="sm">
               <IoMdAdd /> Dodaj pitanje
             </Button>
-            <Stack className="col-md-5 mx-auto my-5">
+            <Stack className="col-md-5 mx-auto mt-2 mt-md-5 mb-5">
               <Button type="submit" className="mx-auto d-flex justify-content-center align-items-center gap-1">
                 <IoIosSave className="mt-1 fs-5" /> {!editMode ? "Spasi kviz" : "Spasi izmjene"}
               </Button>
             </Stack>
           </Form>
-
-          <Modal
-            show={isElementActive}
-            size="lg"
-            onHide={() => {
-              setIsElementActive(false);
-            }}
-          >
-            <Form onSubmit={updateQuestions} noValidate validated={form2Validated}>
-              <Modal.Header closeButton>
-                <Modal.Title>Dodaj pitanje</Modal.Title>
-              </Modal.Header>
-              <Modal.Body className="d-flex flex-column gap-3">
-                <Form.Group className="mb-3">
-                  <Form.Control name="id" type="text" defaultValue={questionEditing ? questionEditing.id : ""} hidden={true} />
-                  <Form.Label>Sadržaj pitanja:</Form.Label>
-                  <Form.Control required type="text" name="question" defaultValue={questionEditing ? questionEditing.question : ""} />
-                  <Form.Text className="text-muted">(Pitanje treba da bude jasno)</Form.Text>
-                </Form.Group>
-
-                <Form.Group className="mb-3 d-flex flex-column gap-2">
-                  <FloatingLabel controlId="floatingInput" label="Odgovor 1">
-                    <Form.Control required type="text" name="answer_1" defaultValue={questionEditing ? questionEditing.answers[0] : ""}></Form.Control>{" "}
-                  </FloatingLabel>
-
-                  <FloatingLabel controlId="floatingInput" label="Odgovor 2">
-                    <Form.Control required type="text" name="answer_2" defaultValue={questionEditing ? questionEditing.answers[1] : ""}></Form.Control>
-                  </FloatingLabel>
-                  <FloatingLabel controlId="floatingInput" label="Odgovor 3 (opcionalno)">
-                    <Form.Control type="text" name="answer_3" defaultValue={questionEditing ? questionEditing.answers[2] : ""}></Form.Control>
-                  </FloatingLabel>
-                  {/* <Form.Text className="text-muted"></Form.Text> */}
-                  <FloatingLabel controlId="floatingInput" label="Odgovor 4 (opcionalno)">
-                    <Form.Control type="text" name="answer_4" defaultValue={questionEditing ? questionEditing.answers[3] : ""}></Form.Control>
-                  </FloatingLabel>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <FloatingLabel controlId="floatingInput" label="Izaberi tačan odgovor pitanja">
-                    <FormSelect
-                      required
-                      aria-label="Tačan odgovor"
-                      name="correctAnswerIndex"
-                      defaultValue={questionEditing?.correctAnswerIndex ? questionEditing?.correctAnswerIndex : ""}
-                    >
-                      <option value=""></option>
-                      <option value="0">Odgovor 1</option>
-                      <option value="1">Odgovor 2</option>
-                      <option value="2">Odgovor 3</option>
-                      <option value="3">Odgovor 4</option>
-                    </FormSelect>
-                  </FloatingLabel>
-                  <Form.Text className="text-muted">(Tačan odgovor određen u ovom polju koristi se prilikom ocjenjivanja kviza)</Form.Text>
-                </Form.Group>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={() => setIsElementActive(false)}>
-                  Zatvori
-                </Button>
-                <Button variant="primary" type="submit">
-                  Spasi izmjene
-                </Button>
-              </Modal.Footer>
-            </Form>
-          </Modal>
         </Col>
       </Row>
     </Container>

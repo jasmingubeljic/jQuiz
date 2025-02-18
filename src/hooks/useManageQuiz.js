@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import useApi from "../api/useApi";
 import useStore from "../store/useStore";
@@ -13,10 +12,9 @@ export default function useManageQuiz() {
   const [questionEditing, setQuestionEditing] = useState(false);
   const [quizById, setQuizById] = useState(false);
   const { addQuiz, editQuiz, fetchQuiz, removeQuiz } = useApi();
-  const { addQuizToStore, updateQuizToStore, removeQuizOnStore, setIsFetching } = useStore();
+  const { addQuizToStore, updateQuizToStore, removeQuizOnStore } = useStore();
   const { isElementActive, setIsElementActive } = useControlUI();
   const { handleFormValidate, handleForm2Validate, formValidated, form2Validated } = useValidateForm();
-  const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
 
@@ -115,7 +113,7 @@ export default function useManageQuiz() {
         updatedQuiz["questions"] = questions;
         updatedQuiz["quizDuration"] = e.target.quizDuration.value;
         editQuizMutation.mutate(updatedQuiz);
-        return navigate("/");
+        return;
       }
       //create
       const quiz = {};
@@ -124,9 +122,8 @@ export default function useManageQuiz() {
       quiz["questions"] = questions;
       quiz["quizDuration"] = e.target.quizDuration.value;
       createQuizMutation.mutate(quiz);
-      navigate("/");
     },
-    [createQuizMutation, editQuizMutation, handleFormValidate, questions, quizById, navigate]
+    [createQuizMutation, editQuizMutation, handleFormValidate, questions, quizById]
   );
 
   /***** REMOVE QUIZ *****/
@@ -141,13 +138,10 @@ export default function useManageQuiz() {
   const createQuizMutation = useMutation({
     mutationFn: addQuiz,
     onSuccess: (quiz) => {
-      // console.log("Quiz saved successfully", quiz);
       addQuizToStore(quiz);
-      setIsFetching(false);
     },
     onError: (error) => {
       console.error("Error saving quiz", error);
-      setIsFetching(false);
     },
   });
 
@@ -166,7 +160,6 @@ export default function useManageQuiz() {
     onSuccess: (quiz) => {
       setQuizById(quiz);
       setQuestions(quiz.questions);
-      setIsFetching(false);
     },
     onError: (error) => {
       console.error("Error fetchig the quiz", error);
@@ -177,7 +170,6 @@ export default function useManageQuiz() {
     mutationFn: removeQuiz,
     onSuccess: (id) => {
       removeQuizOnStore(id);
-      navigate("/");
     },
     onError: (error) => {
       console.error("Error removing quiz", error);

@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800');
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&family=DM+Serif+Text:ital@0;1&family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Radley:ital@0;1&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&family=Signika+Negative:wght@300..700&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap');
+
+$font-family-base: 'Funnel Sans', sans-serif;
+
+$theme-colors: (
+    'primary': #3D5A80,
+    'secondary': #98C1D9,
+    'tertiary': #293241,
+    'light': #E0FBFC,
+    'dark': #1f2631,
+    'info': #293241,
+    'danger': #EE6C4D,
+    'warning': #f0b547,
+    'success': #a7e797,
+    'border': #1f2631,
+    'link': rgb(57, 18, 163)
+);  
+
+$body-color: map-get($theme-colors, 'dark');
+$body-bg: #fffef8;
+$input-border-color: #b4c1cf;
+
+$btn-border-radius: 2rem;
+
+@import "bootstrap/scss/bootstrap";
+
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-success,
+.btn-outline-danger,
+.btn-outline-warning,
+.btn-outline-info,
+.btn-outline-light,
+.btn-outline-dark,
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-info,
+.btn-light,
+.btn-dark {
+  border-radius: 2rem;
+}
+
+input[type="radio"] {
+  border-color: map-get($theme-colors, 'primary');
+}
+input[type="radio"]:hover {
+  cursor: pointer;
+}
+input[type="radio"]:checked {
+  background-color: map-get($theme-colors, 'primary');
+}

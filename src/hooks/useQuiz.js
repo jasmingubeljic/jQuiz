@@ -15,12 +15,7 @@ export default function useQuiz() {
   const { addQuiz, editQuiz, fetchQuiz, removeQuiz } = useApi();
   const { addQuizToStore, updateQuizToStore, removeQuizOnStore } = useStore();
   const { isElementActive, setIsElementActive } = useControlUI();
-  const {
-    handleFormValidate,
-    handleForm2Validate,
-    formValidated,
-    form2Validated,
-  } = useValidateForm();
+  const { handleFormValidate, handleForm2Validate, formValidated, form2Validated } = useValidateForm();
   const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
@@ -59,23 +54,10 @@ export default function useQuiz() {
       e.preventDefault();
       const valid = handleForm2Validate(e);
       if (!valid) return;
-      const {
-        id,
-        question,
-        answer_1,
-        answer_2,
-        answer_3,
-        answer_4,
-        correctAnswerIndex,
-      } = e.target;
+      const { id, question, answer_1, answer_2, answer_3, answer_4, correctAnswerIndex } = e.target;
 
       const editQuestion = id.value;
-      if (
-        question.value.trim() &&
-        answer_1.value.trim() &&
-        answer_2.value.trim() &&
-        correctAnswerIndex.value
-      ) {
+      if (question.value.trim() && answer_1.value.trim() && answer_2.value.trim() && correctAnswerIndex.value) {
         const questionObj = {};
         if (editQuestion) {
           questionObj["id"] = id.value;
@@ -96,9 +78,7 @@ export default function useQuiz() {
 
         if (editQuestion) {
           console.log("questions: ", questions);
-          let updatedArray = questions.map((item) =>
-            item.id === id.value ? questionObj : item
-          );
+          let updatedArray = questions.map((item) => (item.id === id.value ? questionObj : item));
           setQuestions(() => {
             return updatedArray;
           });
@@ -138,8 +118,7 @@ export default function useQuiz() {
       updatedQuiz["title"] = e.target.title.value.trim();
       updatedQuiz["questions"] = questions;
       updatedQuiz["quizDuration"] = e.target.quizDuration.value;
-      editQuizMutation.mutate(updatedQuiz);
-      return navigate("/");
+      return editQuizMutation.mutate(updatedQuiz);
     }
     //create
     const quiz = {};
@@ -148,14 +127,13 @@ export default function useQuiz() {
     quiz["questions"] = questions;
     quiz["quizDuration"] = e.target.quizDuration.value;
     createQuizMutation.mutate(quiz);
-    navigate("/");
   };
 
   const createQuizMutation = useMutation({
     mutationFn: addQuiz,
     onSuccess: (quiz) => {
-      console.log("Quiz saved successfully", quiz);
       addQuizToStore(quiz);
+      navigate("/");
     },
     onError: (error) => {
       console.error("Error saving quiz", error);
@@ -165,8 +143,8 @@ export default function useQuiz() {
   const editQuizMutation = useMutation({
     mutationFn: editQuiz,
     onSuccess: (quiz) => {
-      console.log("Quiz updated successfully", quiz);
       updateQuizToStore(quiz);
+      navigate("/");
     },
     onError: (error) => {
       console.error("Error saving quiz", error);
@@ -176,7 +154,6 @@ export default function useQuiz() {
   const fetchQuizMutation = useMutation({
     mutationFn: fetchQuiz,
     onSuccess: (quiz) => {
-      // console.log("Quiz fetched successfully", quiz);
       setQuizById(quiz);
       setQuestions(quiz.questions);
     },

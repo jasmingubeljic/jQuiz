@@ -4,13 +4,12 @@ import { AiOutlineGithub } from "react-icons/ai";
 
 export default function Footer() {
   return (
-    <Container fluid className="mt-4 bg-dark text-light">
+    <Container fluid className="mt-5 bg-dark text-light">
       <Container className="py-4">
         <Row>
           <Col>
             <p className="d-flex align-items-center gap-2 opacity-75">
-              <AiOutlineGithub className="fs-5" />{" "}
-              https://github.com/jasmingubeljic/jQuiz
+              <AiOutlineGithub className="fs-5" /> https://github.com/jasmingubeljic/jQuiz
             </p>
           </Col>
         </Row>

@@ -9,17 +9,11 @@ export default function Navigation() {
       <Row>
         <Col>
           <Stack direction="horizontal" gap={5}>
-            <Link
-              to="/"
-              className="text-white text-decoration-none d-flex align-items-center gap-1"
-            >
-              <MdQuiz className="mt-1" /> Kvizovi
+            <Link to="/" className="text-white text-decoration-none d-flex align-items-center gap-1">
+              <MdQuiz /> Kvizovi
             </Link>
-            <Link
-              to="/create"
-              className="text-white text-decoration-none d-flex align-items-center gap-1"
-            >
-              <MdAddCircle className="mt-1" /> Dodaj kviz
+            <Link to="/create" className="text-white text-decoration-none d-flex align-items-center gap-1">
+              <MdAddCircle /> Dodaj kviz
             </Link>
           </Stack>
         </Col>
