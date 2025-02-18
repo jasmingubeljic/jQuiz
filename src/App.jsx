@@ -1,7 +1,7 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Wrapper from "./components/Wrapper/Wrapper";
-import QuizScoresPage from "./pages/QuizScores/QuizScores";
+import QuizScoresPage from "./pages/QuizScoresPage/QuizScoresPage";
 import Homepage from "./pages/Homepage/Homepage";
 import QuizPage from "./pages/QuizPage/QuizPage";
 import ManageQuizPage from "./pages/ManageQuizPage/ManageQuizPage";
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/", element: <Homepage /> }, // All quizzes
       { path: "/quiz/:id", element: <QuizPage /> },
-      { path: "/quiz/scores", element: <QuizScoresPage /> },
+      { path: "/scores", element: <QuizScoresPage /> },
       { path: "/create", element: <ManageQuizPage /> },
       { path: "/edit/:id", element: <ManageQuizPage /> },
     ],

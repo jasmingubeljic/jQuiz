@@ -16,7 +16,7 @@ export default function Navigation() {
             <Link to="/create" className="text-white text-decoration-none d-flex align-items-center gap-1">
               <MdAddCircle /> Dodaj kviz
             </Link>
-            <Link to="/quiz/scores" className="text-white text-decoration-none d-flex align-items-center gap-1">
+            <Link to="/scores" className="text-white text-decoration-none d-flex align-items-center gap-1">
               <IoListCircle /> Rezultati
             </Link>
           </Stack>

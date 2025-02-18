@@ -40,10 +40,9 @@ export default function useTakeQuiz() {
     // Store quiz scores history
     if (!quizById || !quizResults || scoreStoredHelper) return;
     const updatedQuiz = { ...quizById };
-    console.log("storing scoreeeeee");
     const score = {
       score: quizResults,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
     if (updatedQuiz["scoresHistory"]) {
       updatedQuiz["scoresHistory"].push(score);
