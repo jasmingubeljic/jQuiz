@@ -29,12 +29,6 @@ const useStore = create(
           return { quizzes: s };
         });
       },
-      isAdmin: true,
-      setIsAdmin: (bool) => {
-        set(() => {
-          return { isAdmin: bool };
-        });
-      },
     }),
     {
       name: "quizzes",
