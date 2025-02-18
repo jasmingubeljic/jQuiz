@@ -144,7 +144,9 @@ export default function useQuiz() {
     mutationFn: editQuiz,
     onSuccess: (quiz) => {
       updateQuizToStore(quiz);
-      navigate("/");
+      if (editMode) {
+        navigate("/");
+      }
     },
     onError: (error) => {
       console.error("Error saving quiz", error);
@@ -154,6 +156,7 @@ export default function useQuiz() {
   const fetchQuizMutation = useMutation({
     mutationFn: fetchQuiz,
     onSuccess: (quiz) => {
+      console.log("quizById: ", quiz);
       setQuizById(quiz);
       setQuestions(quiz.questions);
     },
@@ -187,5 +190,6 @@ export default function useQuiz() {
     questionEditing,
     setQuestionEditing,
     editMode,
+    editQuizMutation,
   };
 }

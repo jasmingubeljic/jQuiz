@@ -3,18 +3,13 @@ import useQuiz from "./useQuiz";
 import useControlUI from "./useControlUI";
 
 export default function useTakeQuiz() {
-  const { quizById } = useQuiz();
+  const { quizById, editQuizMutation } = useQuiz();
   const { isElementActive, setIsElementActive } = useControlUI();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [quizResults, setQuizResults] = useState(false);
   const [quizMessage, setQuizMessage] = useState(false);
   const [answerResultsArray, setAnswerResultsArray] = useState([]);
-
-  useEffect(() => {
-    if (quizById) {
-      console.log("quizById: ", quizById);
-    }
-  }, [quizById]);
+  const [scoreStoredHelper, setScoreStoredHelper] = useState(false);
 
   // define some literals
   let questionsLength;
@@ -35,10 +30,29 @@ export default function useTakeQuiz() {
       if (scorePercentage >= 60) {
         quizMessage = "Čestitamo! Kviz ste uspješno završili";
       }
+      //
       setQuizResults(formattedValue);
       setQuizMessage(quizMessage);
     }
   }, [currentQuestionIndex, questionsLength, answerResultsArray]);
+
+  useEffect(() => {
+    // Store quiz scores history
+    if (!quizById || !quizResults || scoreStoredHelper) return;
+    const updatedQuiz = { ...quizById };
+    console.log("storing scoreeeeee");
+    const score = {
+      score: quizResults,
+      createdAt: new Date(),
+    };
+    if (updatedQuiz["scoresHistory"]) {
+      updatedQuiz["scoresHistory"].push(score);
+    } else {
+      updatedQuiz["scoresHistory"] = [score];
+    }
+    editQuizMutation.mutate(updatedQuiz);
+    setScoreStoredHelper(true);
+  }, [quizById, quizResults, editQuizMutation, scoreStoredHelper]);
 
   const submitAnswerHandler = useCallback(
     (e) => {
@@ -47,8 +61,7 @@ export default function useTakeQuiz() {
       if (!selectedRadioValue) {
         return;
       }
-      const selectedAnswerIndex =
-        questionObj.answers.indexOf(selectedRadioValue);
+      const selectedAnswerIndex = questionObj.answers.indexOf(selectedRadioValue);
       const correctAnswerIndex = questionObj.correctAnswerIndex;
       if (selectedAnswerIndex === +correctAnswerIndex) {
         setAnswerResultsArray((prevState) => {

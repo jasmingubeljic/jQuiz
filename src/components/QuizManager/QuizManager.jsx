@@ -38,7 +38,9 @@ export default function AddQuiz() {
       <Row>
         <Col>
           <Stack direction="horizontal" className="gap-3 align-items-center mb-5">
-            <h1 className="fw-regular fs-5 text-uppercase mb-3 m-auto ms-md-0">{editMode ? `Uredi kviz (${quizById.title})` : "Dodaj novi kviz"}</h1>
+            <h1 className="text-primary fw-regular fs-5 text-uppercase mb-3 m-auto ms-md-0">
+              {editMode ? `Uredi kviz (${quizById.title})` : "Dodaj novi kviz"}
+            </h1>
             {editMode && (
               <Button
                 onClick={() => {
