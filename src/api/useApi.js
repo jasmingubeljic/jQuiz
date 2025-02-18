@@ -1,7 +1,7 @@
 import useStore from "../store/useStore";
 
 export default function useApi() {
-  const { quizzes } = useStore();
+  const quizzes = useStore((store) => store.quizzes);
 
   const simulateNetworkDelay = (time = 600) => {
     return new Promise((resolve) => setTimeout(resolve, time));
@@ -20,9 +20,7 @@ export default function useApi() {
 
   const editQuiz = async (updatedQuiz) => {
     await simulateNetworkDelay();
-    const quizIndex = quizzes.findIndex(
-      (quiz) => quiz.id === updatedQuiz["id"]
-    );
+    const quizIndex = quizzes.findIndex((quiz) => quiz.id === updatedQuiz["id"]);
     console.log("quizIndex", quizIndex);
     if (quizIndex === -1) throw new Error("Quiz not found");
     console.log("updatedQuiz", updatedQuiz);

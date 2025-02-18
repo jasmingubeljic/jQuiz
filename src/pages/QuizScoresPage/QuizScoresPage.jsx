@@ -4,14 +4,16 @@ import useStore from "../../store/useStore";
 
 export default function QuizScores() {
   const quizzes = useStore((store) => store.quizzes);
-  const noContent = quizzes.length === 0;
+
+  const quizzesWithScore = quizzes.filter((quiz) => quiz.scoresHistory);
+  console.log("quizzesWithScore", quizzesWithScore);
 
   return (
     <Container>
       <h1 className="text-primary fw-regular fs-5 text-uppercase mb-3 m-auto ms-md-0">Pregled historije rezultata</h1>
       <Stack gap={3}>
-        {!noContent &&
-          quizzes.map((q, index) => (
+        {quizzesWithScore.map((q, index) => {
+          return (
             <Stack key={index} className="flex-column gap-3 border border-1 shadow-sm rounded px-3 py-3">
               <div className="d-flex flex-column flex-md-row align-items-center gap-1 gap-md-3 m-auto ms-md-0">
                 <h2 className="fs-5 m-0 text-primary">{q.title}</h2>
@@ -20,7 +22,7 @@ export default function QuizScores() {
                 </p>
               </div>
               <div>
-                {q.scoresHistory.map((data, index) => {
+                {q.scoresHistory?.map((data, index) => {
                   const formattedDate = data.createdAt?.split("T")[0];
                   const ordinalNo = index + 1;
                   return (
@@ -31,8 +33,9 @@ export default function QuizScores() {
                 })}
               </div>
             </Stack>
-          ))}
-        {noContent && <p>Statistika kvizova će biti prikazana kada se prikupe podaci prilikom rješavanja kvizova.</p>}
+          );
+        })}
+        {quizzesWithScore.length === 0 && <p>Statistika kvizova će biti prikazana kada se prikupe podaci prilikom rješavanja kvizova.</p>}
       </Stack>
     </Container>
   );

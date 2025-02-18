@@ -9,17 +9,14 @@ const useStore = create(
         set((state) => {
           const s = state.quizzes;
           console.log(s);
-          return [{ quizzes: s.push(payload) }];
+          // return [{ quizzes: s.push(payload) }];
+          return { quizzes: [...state.quizzes, payload] };
         });
       },
       updateQuizToStore: (quiz) => {
         set((state) => {
-          let s = state.quizzes;
-          const quizIndex = s.findIndex((q) => q.id === quiz.id);
-
-          let sq = state.quizzes;
-          sq[quizIndex] = quiz;
-          return { quizzes: sq };
+          const updatedQuizzes = state.quizzes.map((q) => (q.id === quiz.id ? quiz : q));
+          return { quizzes: updatedQuizzes };
         });
       },
       removeQuizOnStore: (id) => {

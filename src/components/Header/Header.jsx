@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 
 export default function Header() {
   return (
-    <Container fluid className="bg-primary py-3 mb-4">
+    <Container fluid className="bg-primary py-3 mb-5">
       <Navigation />
     </Container>
   );

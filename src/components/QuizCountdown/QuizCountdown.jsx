@@ -28,8 +28,7 @@ export default function QuizCountdown(props) {
       return (
         <div className="mt-5">
           <p className="text-muted">
-            Preostalo vrijeme: {zeroPad(hours)}:{zeroPad(minutes)}:
-            {zeroPad(seconds)}
+            Preostalo vrijeme: {zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}
           </p>
         </div>
       );

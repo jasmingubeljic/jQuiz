@@ -62,10 +62,10 @@ export default function QuizTaking() {
       ) : (
         <div className="d-flex flex-column justify-content-center align-items-center">
           <h1 className="fw-regular fs-5 text-uppercase my-5">Rezultat</h1>
-          <h2 className="fs-2 ms-md-0">
+          <h2 className="text-primary fs-2 ms-md-0">
             Vaš rezultat je <span className="fw-bold">{quizResults}%</span>
           </h2>
-          <Alert variant="secondary" className="mt-2 m-auto">
+          <Alert variant="secondary" className="text-primary mt-2 m-auto">
             {quizMessage}
           </Alert>
         </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function useQuiz() {
+export default function useManageQuiz() {
   const [formValidated, setFormValidated] = useState(false);
   const [form2Validated, setForm2Validated] = useState(false);
 

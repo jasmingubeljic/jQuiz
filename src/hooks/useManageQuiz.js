@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import useApi from "../api/useApi";
 import useStore from "../store/useStore";
@@ -15,28 +16,61 @@ export default function useManageQuiz() {
   const { addQuizToStore, updateQuizToStore, removeQuizOnStore } = useStore();
   const { isElementActive, setIsElementActive } = useControlUI();
   const { handleFormValidate, handleForm2Validate, formValidated, form2Validated } = useValidateForm();
+  const navigate = useNavigate();
   const params = useParams();
   const [searchParams] = useSearchParams();
-
   const editMode = searchParams.get("edit") === "true";
   const quizId = params.id;
 
-  useEffect(() => {
-    if (quizId) {
-      fetchQuizById(quizId);
-    } else {
-      setQuizById(false);
-      setQuestions([]);
-    }
-  }, [editMode, quizId, fetchQuizById]);
+  /************** MUTATION function definitions **************/
+  const createQuizMutation = useMutation({
+    mutationFn: addQuiz,
+    onSuccess: (quiz) => {
+      addQuizToStore(quiz);
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("Error saving quiz", error);
+    },
+  });
 
-  useEffect(() => {
-    if (!isElementActive) {
-      setQuestionEditing(false);
-    }
-  }, [isElementActive]);
+  const editQuizMutation = useMutation({
+    mutationFn: editQuiz,
+    onSuccess: (quiz) => {
+      updateQuizToStore(quiz);
+      if (editMode) {
+        navigate("/");
+      }
+    },
+    onError: (error) => {
+      console.error("Error saving quiz", error);
+    },
+  });
 
-  // manage question form data
+  const fetchQuizMutation = useMutation({
+    mutationFn: fetchQuiz,
+    onSuccess: (quiz) => {
+      console.log("quizById: ", quiz);
+      setQuizById(quiz);
+      setQuestions(quiz.questions);
+    },
+    onError: (error) => {
+      console.error("Error fetchig the quiz", error);
+    },
+  });
+
+  const removeQuizMutation = useMutation({
+    mutationFn: removeQuiz,
+    onSuccess: (id) => {
+      removeQuizOnStore(id);
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("Error removing quiz", error);
+    },
+  }); // end of mutation functions
+
+  /************** MANAGE SAVE QUESTION **************/
   const updateQuestions = useCallback(
     (e) => {
       e.preventDefault();
@@ -92,89 +126,51 @@ export default function useManageQuiz() {
       setQuestions(updatedArray);
     },
     [questions]
-  );
+  ); // end of manage save question
 
-  /***** READ QUIZ by ID *****/
-  const fetchQuizById = useCallback(() => {
-    fetchQuizMutation.mutate(quizId);
-  }, [fetchQuizMutation, quizId]);
+  /********************* CRUD QUIZ *********************/
+  const createQuiz = (e) => {
+    e.preventDefault();
+    const valid = handleFormValidate(e);
+    if (!valid || questions.length === 0) return;
+    if (quizById?.id) {
+      /* update quiz */
+      const updatedQuiz = {};
+      updatedQuiz["id"] = quizById.id;
+      updatedQuiz["title"] = e.target.title.value.trim();
+      updatedQuiz["questions"] = questions;
+      updatedQuiz["quizDuration"] = e.target.quizDuration.value;
+      return editQuizMutation.mutate(updatedQuiz);
+    }
+    /* create quiz */
+    const quiz = {};
+    quiz["id"] = uuidv4();
+    quiz["title"] = e.target.title.value.trim();
+    quiz["questions"] = questions;
+    quiz["quizDuration"] = e.target.quizDuration.value;
+    createQuizMutation.mutate(quiz);
+  };
 
-  /***** CREATE, UPDATE QUIZ *****/
-  const createQuiz = useCallback(
-    (e) => {
-      e.preventDefault();
-      const valid = handleFormValidate(e);
-      if (!valid || questions.length === 0) return;
-      if (quizById?.id) {
-        //update
-        const updatedQuiz = {};
-        updatedQuiz["id"] = quizById.id;
-        updatedQuiz["title"] = e.target.title.value.trim();
-        updatedQuiz["questions"] = questions;
-        updatedQuiz["quizDuration"] = e.target.quizDuration.value;
-        editQuizMutation.mutate(updatedQuiz);
-        return;
-      }
-      //create
-      const quiz = {};
-      quiz["id"] = uuidv4();
-      quiz["title"] = e.target.title.value.trim();
-      quiz["questions"] = questions;
-      quiz["quizDuration"] = e.target.quizDuration.value;
-      createQuizMutation.mutate(quiz);
-    },
-    [createQuizMutation, editQuizMutation, handleFormValidate, questions, quizById]
-  );
+  const removeQuizById = (id) => {
+    removeQuizMutation.mutate(id);
+  };
 
-  /***** REMOVE QUIZ *****/
-  const removeQuizById = useCallback(
-    (id) => {
-      removeQuizMutation.mutate(id);
-    },
-    [removeQuizMutation]
-  );
+  /************** MISC **************/
+  useEffect(() => {
+    // get quiz by id
+    if (quizId) {
+      fetchQuizMutation.mutate(quizId);
+    } else {
+      setQuizById(false);
+      setQuestions([]);
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editMode, quizId]);
 
-  // Mutation functions
-  const createQuizMutation = useMutation({
-    mutationFn: addQuiz,
-    onSuccess: (quiz) => {
-      addQuizToStore(quiz);
-    },
-    onError: (error) => {
-      console.error("Error saving quiz", error);
-    },
-  });
-
-  const editQuizMutation = useMutation({
-    mutationFn: editQuiz,
-    onSuccess: (quiz) => {
-      updateQuizToStore(quiz);
-    },
-    onError: (error) => {
-      console.error("Error updating quiz", error);
-    },
-  });
-
-  const fetchQuizMutation = useMutation({
-    mutationFn: fetchQuiz,
-    onSuccess: (quiz) => {
-      setQuizById(quiz);
-      setQuestions(quiz.questions);
-    },
-    onError: (error) => {
-      console.error("Error fetchig the quiz", error);
-    },
-  });
-
-  const removeQuizMutation = useMutation({
-    mutationFn: removeQuiz,
-    onSuccess: (id) => {
-      removeQuizOnStore(id);
-    },
-    onError: (error) => {
-      console.error("Error removing quiz", error);
-    },
-  });
+  useEffect(() => {
+    if (!isElementActive) {
+      setQuestionEditing(false);
+    }
+  }, [isElementActive]);
 
   return {
     questions,
@@ -190,5 +186,6 @@ export default function useManageQuiz() {
     questionEditing,
     setQuestionEditing,
     editMode,
+    editQuizMutation,
   };
 }

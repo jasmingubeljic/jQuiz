@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
-import useQuiz from "./useQuiz";
+import useManageQuiz from "./useManageQuiz";
 import useControlUI from "./useControlUI";
 
 export default function useTakeQuiz() {
-  const { quizById, editQuizMutation } = useQuiz();
+  const { quizById, editQuizMutation } = useManageQuiz();
   const { isElementActive, setIsElementActive } = useControlUI();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [quizResults, setQuizResults] = useState(false);

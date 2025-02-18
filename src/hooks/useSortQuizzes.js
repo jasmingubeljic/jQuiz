@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import useStore from "../store/useStore";
 
-export default function useQuiz() {
-  const { quizzes } = useStore();
+export default function useSortQuizzes() {
+  const quizzes = useStore((store) => store.quizzes);
   const [sortedQuizzes, setSortedQuizzes] = useState(quizzes);
 
   const handleSortQuizzes = useCallback(

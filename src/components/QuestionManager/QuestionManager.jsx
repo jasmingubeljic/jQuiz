@@ -1,10 +1,10 @@
 import { Modal, Form, Button, FloatingLabel, FormSelect } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-export default function QuestionManager({ isElementActive, onHide, onSubmit, onClose, form2Validated, questionEditing }) {
+export default function QuestionManager({ isElementActive, onHide, onSubmit, onClose, questionEditing }) {
   return (
     <Modal show={isElementActive} size="lg" onHide={onHide}>
-      <Form onSubmit={onSubmit} /* noValidate*/ validated={form2Validated}>
+      <Form onSubmit={onSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>Dodaj pitanje</Modal.Title>
         </Modal.Header>
@@ -50,10 +50,10 @@ export default function QuestionManager({ isElementActive, onHide, onSubmit, onC
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="secondary" onClick={onClose} className="px-3" size="sm">
             Zatvori
           </Button>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" className="px-3" size="sm">
             Spasi izmjene
           </Button>
         </Modal.Footer>
