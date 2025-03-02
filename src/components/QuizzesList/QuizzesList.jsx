@@ -17,12 +17,12 @@ export default function QuizzesList({ sortedQuizzes }) {
             <div className="d-flex flex-column flex-md-row align-items-center gap-1 gap-md-3 m-auto ms-md-0">
               <h2 className="fs-5 m-0 text-primary">{q.title}</h2>
               <p className="text-muted m-0 opacity-50">
-                {q.questions.length} {q.questions.length > 1 ? "pitanja" : "pitanje"}
+                {q.questions.length} {q.questions.length > 1 ? "questions" : "question"}
               </p>
             </div>
             <div className="d-flex gap-2 align-items-center m-auto me-md-0">
               <Button variant="outline-primary" onClick={() => navigate(`/quiz/${q.id}`)} size="md" className="d-flex gap-1 align-items-center">
-                Pokreni
+                Start Quiz
               </Button>
               <Button
                 variant="text"
@@ -31,7 +31,7 @@ export default function QuizzesList({ sortedQuizzes }) {
                 className="text-primary d-flex gap-1 align-items-center"
               >
                 <MdModeEdit />
-                Uredi
+                Edit
               </Button>
             </div>
           </Stack>

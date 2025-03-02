@@ -10,7 +10,7 @@ export default function QuizScores() {
 
   return (
     <Container>
-      <h1 className="text-primary fw-regular fs-5 text-uppercase mb-3 m-auto ms-md-0">Pregled historije rezultata</h1>
+      <h1 className="text-primary fw-regular fs-5 text-uppercase mb-3 m-auto ms-md-0">Results</h1>
       <Stack gap={3}>
         {quizzesWithScore.map((q, index) => {
           return (
@@ -18,7 +18,7 @@ export default function QuizScores() {
               <div className="d-flex flex-column flex-md-row align-items-center gap-1 gap-md-3 m-auto ms-md-0">
                 <h2 className="fs-5 m-0 text-primary">{q.title}</h2>
                 <p className="text-muted m-0 opacity-50">
-                  {q.questions.length} {q.questions.length > 1 ? "pitanja" : "pitanje"}
+                  {q.questions.length} {q.questions.length > 1 ? "questions" : "question"}
                 </p>
               </div>
               <div>
@@ -35,7 +35,7 @@ export default function QuizScores() {
             </Stack>
           );
         })}
-        {quizzesWithScore.length === 0 && <p>Statistika kvizova će biti prikazana kada se prikupe podaci prilikom rješavanja kvizova.</p>}
+        {quizzesWithScore.length === 0 && <p>The quiz statistics will be displayed once data is collected during quiz completion.</p>}
       </Stack>
     </Container>
   );

@@ -38,9 +38,7 @@ export default function AddQuiz() {
       <Row>
         <Col>
           <Stack direction="horizontal" className="gap-3 align-items-center mb-5">
-            <h1 className="text-primary fw-regular fs-5 text-uppercase mb-3 m-auto ms-md-0">
-              {editMode ? `Uredi kviz (${quizById.title})` : "Dodaj novi kviz"}
-            </h1>
+            <h1 className="text-primary fw-regular fs-5 text-uppercase mb-3 m-auto ms-md-0">{editMode ? `Edit Quiz (${quizById.title})` : "Add New Quiz"}</h1>
             {editMode && (
               <Button
                 onClick={() => {
@@ -50,18 +48,18 @@ export default function AddQuiz() {
                 className="d-flex align-items-center gap-1 ms-auto"
                 size="sm"
               >
-                <RiDeleteBin6Line /> Izbriši kviz
+                <RiDeleteBin6Line /> Delete Quiz
               </Button>
             )}
           </Stack>
           <Form onSubmit={createQuiz} noValidate validated={formValidated} className="d-flex flex-column gap-4">
             <Form.Group className="mb-3">
-              <Form.Label>Naziv kviza:</Form.Label>
+              <Form.Label>Quiz Title:</Form.Label>
               <Form.Control required type="text" name="title" defaultValue={quizById ? quizById.title : ""} size="lg" />
-              <Form.Text className="text-muted">Naziv vašeg kviza</Form.Text>
+              <Form.Text className="text-muted">Add a descriptive title for your quiz</Form.Text>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Vrijeme izrade kviza u sekundama (opcionalno):</Form.Label>
+              <Form.Label>Time Limit (optional):</Form.Label>
               <Form.Control
                 type="number"
                 name="quizDuration"
@@ -70,7 +68,7 @@ export default function AddQuiz() {
                 className={`${styles["quiz-duration"]}`}
                 size="sm"
               ></Form.Control>
-              <Form.Text className="text-muted">(Korisnici će imati ograničeno vrijeme za rješavanje kviza)</Form.Text>
+              <Form.Text className="text-muted">Users will have a limited time to complete the quiz</Form.Text>
             </Form.Group>
             <Stack gap={3} className="mb-3">
               {questions.map((q, index) => {
@@ -100,7 +98,7 @@ export default function AddQuiz() {
                           setIsElementActive(true);
                         }}
                       >
-                        <MdModeEdit /> Uredi
+                        <MdModeEdit /> Edit
                       </Button>
                       <Button
                         type="button"
@@ -123,11 +121,11 @@ export default function AddQuiz() {
               className="d-flex align-items-center gap-1 m-auto ms-md-0 pe-3"
               size="sm"
             >
-              <IoMdAdd /> Dodaj pitanje
+              <IoMdAdd /> Add Question
             </Button>
             <Stack className="col-md-5 mx-auto mt-2 mt-md-5 mb-5">
               <Button type="submit" className="mx-auto d-flex justify-content-center align-items-center gap-1">
-                <RiSave2Line className="fs-5" /> {!editMode ? "Spasi kviz" : "Spasi izmjene"}
+                <RiSave2Line className="fs-5" /> {!editMode ? "Save Quiz" : "Update Quiz"}
               </Button>
             </Stack>
           </Form>
