@@ -36,16 +36,16 @@ export default function QuizTaking() {
               </div>
               <div className="m-auto ms-md-0">
                 <Button ref={buttonRef} type="submit" variant="primary" hidden={currentQuestionIndex + 1 === questionsLength} className="mt-5">
-                  Dalje
+                  Next
                 </Button>
 
                 <Button onClick={() => setIsElementActive(true)} variant="primary" hidden={currentQuestionIndex + 1 !== questionsLength} className="mt-5">
-                  Završi
+                  Submit
                 </Button>
 
                 <Confirm
-                  title="Da li ...?"
-                  message="Da li ste sigurni da želite završiti kviz?"
+                  title="Are you ...?"
+                  message="Are you sure you want to submit the quiz?"
                   show={isElementActive}
                   onClose={() => setIsElementActive(false)}
                   onConfirmAction={() => {
@@ -61,9 +61,9 @@ export default function QuizTaking() {
         </div>
       ) : (
         <div className="d-flex flex-column justify-content-center align-items-center">
-          <h1 className="fw-regular fs-5 text-uppercase my-5">Rezultat</h1>
+          <h1 className="fw-regular fs-5 text-uppercase my-5">Result</h1>
           <h2 className="text-primary fs-2 ms-md-0">
-            Vaš rezultat je <span className="fw-bold">{quizResults}%</span>
+            Your score is <span className="fw-bold">{quizResults}%</span>
           </h2>
           <Alert variant="secondary" className="text-primary mt-2 m-auto">
             {quizMessage}

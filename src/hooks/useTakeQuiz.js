@@ -26,9 +26,9 @@ export default function useTakeQuiz() {
       const correctAnswersLength = answerResultsArray.filter((a) => a).length;
       const scorePercentage = (correctAnswersLength / questionsLength) * 100;
       const formattedValue = Math.round(scorePercentage).toString(); // we need string since in case of number 0, it is falsy value
-      let quizMessage = "Nažalost, niste prošli kviz. Pokušajte ponovo!";
+      let quizMessage = "Unfortunately, you did not pass the quiz. Please try again!";
       if (scorePercentage >= 60) {
-        quizMessage = "Čestitamo! Kviz ste uspješno završili";
+        quizMessage = "Congratulations! You have successfully completed the quiz.";
       }
       //
       setQuizResults(formattedValue);

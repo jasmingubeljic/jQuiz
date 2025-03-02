@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import QuizTaking from "../../components/QuizTaking.jsx/QuizTaking";
+import QuizTaking from "../../components/QuizTaking/QuizTaking";
 
 export default function QuizPage() {
   return (
