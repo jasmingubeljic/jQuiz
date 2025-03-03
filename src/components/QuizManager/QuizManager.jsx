@@ -26,6 +26,8 @@ export default function AddQuiz() {
     deleteQuestionById,
     questionEditing,
     setQuestionEditing,
+    quizTitle,
+    setQuizTitle,
     editMode,
   } = useManageQuiz();
 
@@ -55,7 +57,7 @@ export default function AddQuiz() {
           <Form onSubmit={createQuiz} noValidate validated={formValidated} className="d-flex flex-column gap-4">
             <Form.Group className="mb-3">
               <Form.Label>Quiz Title:</Form.Label>
-              <Form.Control required type="text" name="title" defaultValue={quizById ? quizById.title : ""} size="lg" />
+              <Form.Control required type="text" name="title" value={quizTitle} size="lg" onChange={(e) => setQuizTitle(e.target.value)} />
               <Form.Text className="text-muted">Add a descriptive title for your quiz</Form.Text>
             </Form.Group>
             <Form.Group className="mb-3">

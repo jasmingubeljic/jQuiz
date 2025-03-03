@@ -11,7 +11,8 @@ import { useMutation } from "@tanstack/react-query";
 export default function useManageQuiz() {
   const [questions, setQuestions] = useState([]);
   const [questionEditing, setQuestionEditing] = useState(false);
-  const [quizById, setQuizById] = useState(false);
+  const [quizById, setQuizById] = useState(null);
+  const [quizTitle, setQuizTitle] = useState("");
   const { addQuiz, editQuiz, fetchQuiz, removeQuiz } = useApi();
   const { addQuizToStore, updateQuizToStore, removeQuizOnStore } = useStore();
   const { isElementActive, setIsElementActive } = useControlUI();
@@ -52,6 +53,7 @@ export default function useManageQuiz() {
     onSuccess: (quiz) => {
       console.log("quizById: ", quiz);
       setQuizById(quiz);
+      setQuizTitle(quiz.title);
       setQuestions(quiz.questions);
     },
     onError: (error) => {
@@ -161,7 +163,8 @@ export default function useManageQuiz() {
     if (quizId) {
       fetchQuizMutation.mutate(quizId);
     } else {
-      setQuizById(false);
+      setQuizById(null);
+      setQuizTitle("");
       setQuestions([]);
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editMode, quizId]);
@@ -185,6 +188,8 @@ export default function useManageQuiz() {
     deleteQuestionById,
     questionEditing,
     setQuestionEditing,
+    quizTitle,
+    setQuizTitle,
     editMode,
     editQuizMutation,
   };
