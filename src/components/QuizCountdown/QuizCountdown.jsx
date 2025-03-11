@@ -1,9 +1,10 @@
+import React from "react";
 import Countdown, { zeroPad } from "react-countdown";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import Alert from "react-bootstrap/Alert";
 
-export default function QuizCountdown(props) {
+const QuizCountdown = React.memo(function QuizCountdown(props) {
   const { quizDuration, quizResults } = props;
   const quizDurationInMS = +quizDuration * 1000;
   const navigate = useNavigate();
@@ -38,9 +39,11 @@ export default function QuizCountdown(props) {
   if (!quizDuration) return;
 
   return <Countdown date={Date.now() + quizDurationInMS} renderer={renderer} />;
-}
+});
 
 QuizCountdown.propTypes = {
   quizDuration: PropTypes.number.isRequired,
   quizResults: PropTypes.number.isRequired,
 };
+
+export default QuizCountdown;
