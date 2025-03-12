@@ -2,6 +2,8 @@
 
 A showcase of a quiz app with CRUD operations and the ability to take quizzes.
 
+The app is available at https://j-quiz-topaz.vercel.app/
+
 ## Installation
 
 1. Clone the repository:
