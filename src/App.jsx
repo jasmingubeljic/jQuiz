@@ -6,6 +6,7 @@ import Homepage from "./pages/Homepage/Homepage";
 import QuizPage from "./pages/QuizPage/QuizPage";
 import ManageQuizPage from "./pages/ManageQuizPage/ManageQuizPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <Analytics />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
